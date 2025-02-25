@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e  # Exit immediately if any command fails
+set -e  # Exit on any error
 
 HOST='free-and-focus'
 USER="ebecerra"
@@ -10,6 +10,16 @@ CORES='24'
 RAM='32000'
 DISK='200GB'
 ZONE='us-central1-c'
+
+# Function to check if SSH is available
+function wait_for_ssh {
+    echo "Waiting for SSH to be available on $HOST..."
+    until gcloud compute ssh "$REMOTE" --zone="$ZONE" --command="echo SSH is ready" &>/dev/null; do
+        echo "SSH not available yet. Retrying in 5 seconds..."
+        sleep 5
+    done
+    echo "SSH is now available!"
+}
 
 function cloud_exec {
     gcloud compute ssh "$REMOTE" --zone="$ZONE" --command="$@"
@@ -23,6 +33,8 @@ function cloud_create {
         --image-family=debian-11 \
         --image-project=debian-cloud \
         --boot-disk-size="$DISK" \
+        --tags=allow-ssh \
+        --metadata=startup-script="sudo systemctl enable --now ssh" \
         --quiet
 }
 
@@ -40,6 +52,9 @@ else
     echo "Instance $HOST does not exist. Creating a new one..."
     cloud_create
 fi
+
+# Wait for SSH to be ready
+wait_for_ssh
 
 # Execute setup commands on the VM
 cloud_exec "sudo apt update && sudo apt install -y git make"
