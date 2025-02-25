@@ -4,13 +4,16 @@ MINIFORGE="$HOME/miniforge3"
 MAMBA="$MINIFORGE/bin/mamba"
 ENV='mamba run --name hoox'
 
+ISCAN_VERSION=5.73-104.0
+MINIFORGE_VERSION=24.11.3-0
 
-make install-mamba MINIFORGE_INSTALL_DIR="$MINIFORGE"
+make install-mamba MINIFORGE_VERSION="$MINIFORGE_VERSION" MINIFORGE_INSTALL_DIR="$MINIFORGE"
 eval "`$MAMBA shell hook --shell bash`"
 
 mamba env create --yes --file environment.yml
+ISCAN_DRY = --dry
 
-$ENV make install-iscan
+$ENV make install-iscan ISCAN_VERSION="$ISCAN_VERSION" ISCAN_DRY=""
 $ENV make install-Rlibs
 
 INTERPROSCAN=$(dirname $($ENV fd -a interproscan.sh | head -1))
