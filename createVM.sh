@@ -58,6 +58,6 @@ wait_for_ssh
 
 # Execute setup commands on the VM
 cloud_exec "sudo apt update && sudo apt install -y git make"
-cloud_exec "git clone https://github.com/elbecerrasoto/deployment_hoox"
+cloud_exec "git clone https://github.com/elbecerrasoto/deploy-hoox"
 cloud_exec "git clone https://github.com/elbecerrasoto/hoox"
-cloud_exec "cd $HOME/hoox && $HOME/deployment_hoox/install_hoox.sh"
+cloud_exec "cd $HOME/hoox && $HOME/deploy-hoox/install_hoox.sh"
