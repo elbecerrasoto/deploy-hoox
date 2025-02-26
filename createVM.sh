@@ -1,19 +1,22 @@
 #!/usr/bin/env bash
+set -e
+# Deploy the hoox pipeline
+# on a Google Cloud Plataform Virtual Machine.
+# The excution time of this script is:
+# around 40 minutes
 
-set -e  # Exit on any error
-
-HOST='free-and-focus'
-USER="ebecerra"
-REMOTE="$USER@$HOST"
+USER="$1"
+ZONE="$2"
+NAME="$3"
+REMOTE="$USER@$NAME"
 
 CORES='24'
 RAM='32000'
 DISK='200GB'
-ZONE='us-central1-c'
 
-# Function to check if SSH is available
+
 function wait_for_ssh {
-    echo "Waiting for SSH to be available on $HOST..."
+    echo "Waiting for SSH to be available on $NAME..."
     until gcloud compute ssh "$REMOTE" --zone="$ZONE" --command="echo SSH is ready" &>/dev/null; do
         echo "SSH not available yet. Retrying in 5 seconds..."
         sleep 5
@@ -21,13 +24,15 @@ function wait_for_ssh {
     echo "SSH is now available!"
 }
 
+
 function cloud_exec {
     gcloud compute ssh "$REMOTE" --zone="$ZONE" --command="$@"
 }
 
+
 function cloud_create {
-    echo "Creating VM: $HOST..."
-    gcloud compute instances create "$HOST" \
+    echo "Creating VM: $NAME..."
+    gcloud compute instances create "$NAME" \
         --zone="$ZONE" \
         --machine-type=custom-"$CORES"-"$RAM" \
         --image-family=debian-11 \
@@ -38,25 +43,27 @@ function cloud_create {
         --quiet
 }
 
+
 function cloud_delete {
-    echo "Deleting VM: $HOST..."
-    gcloud compute instances delete "$HOST" --zone="$ZONE" --quiet
+    echo "Deleting VM: $NAME..."
+    gcloud compute instances delete "$NAME" --zone="$ZONE" --quiet
 }
 
+
 # Check if the instance already exists
-if gcloud compute instances describe "$HOST" --zone="$ZONE" &>/dev/null; then
-    echo "Instance $HOST exists. Deleting and recreating..."
+if gcloud compute instances describe "$NAME" --zone="$ZONE" &>/dev/null; then
+    echo "Instance $NAME exists. Deleting and recreating..."
     cloud_delete
     cloud_create
 else
-    echo "Instance $HOST does not exist. Creating a new one..."
+    echo "Instance $NAME does not exist. Creating a new one..."
     cloud_create
 fi
 
-# Wait for SSH to be ready
+
 wait_for_ssh
 
-# Execute setup commands on the VM
+
 cloud_exec "sudo apt update && sudo apt install -y git make"
 cloud_exec "git clone https://github.com/elbecerrasoto/deploy-hoox"
 cloud_exec "git clone https://github.com/elbecerrasoto/hoox"
