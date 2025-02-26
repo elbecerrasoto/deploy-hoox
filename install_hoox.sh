@@ -16,7 +16,7 @@ $ENV make install-iscan ISCAN_VERSION="$ISCAN_VERSION" ISCAN_DRY="" &
 $ENV make install-Rlibs &
 wait
 
-INTERPROSCAN="interproscan-$ISCAN_VERSION/interproscan.sh"
+INTERPROSCAN="$(realpath interproscan-$ISCAN_VERSION)"
 export PATH="${PATH}:$INTERPROSCAN"
 
 $ENV make test
