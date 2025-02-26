@@ -12,8 +12,9 @@ eval "`$MAMBA shell hook --shell bash`" # tied to miniforge version >25.1.1-0
 
 mamba env create --yes --file environment.yml
 
-$ENV make install-iscan ISCAN_VERSION="$ISCAN_VERSION" ISCAN_DRY=""
-$ENV make install-Rlibs
+$ENV make install-iscan ISCAN_VERSION="$ISCAN_VERSION" ISCAN_DRY="" &
+$ENV make install-Rlibs &
+wait
 
 INTERPROSCAN=$(dirname $($ENV fd -a interproscan.sh | head -1))
 export PATH="${PATH}:$INTERPROSCAN"
