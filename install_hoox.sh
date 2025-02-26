@@ -11,7 +11,6 @@ make install-mamba MINIFORGE_VERSION="$MINIFORGE_VERSION" MINIFORGE_INSTALL_DIR=
 eval "`$MAMBA shell hook --shell bash`"
 
 mamba env create --yes --file environment.yml
-ISCAN_DRY = --dry
 
 $ENV make install-iscan ISCAN_VERSION="$ISCAN_VERSION" ISCAN_DRY=""
 $ENV make install-Rlibs
