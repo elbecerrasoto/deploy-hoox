@@ -1,19 +1,19 @@
-# deploy-hoox
+# Deploy _pandoomain_ on Google Cloud Platform (GCP)
 
-Deploy the **Hoox pipeline** on a **Google Cloud Platform (GCP) Virtual Machine (VM)**.
+Easily deploy the **Pandoomain pipeline** on a **Google Cloud Platform (GCP) Virtual Machine (VM)** for protein domain annotation and analysis.
 
-## Deployment Instructions
+## 🚀 Quick Start
 
-### 1. Clone the Repository
+### 1️⃣ Clone the Repository
 
 ```sh
 git clone https://github.com/elbecerrasoto/deploy-pandoomain
 cd deploy-pandoomain
 ```
 
-### 2. Define Input Variables
+### 2️⃣ Set Input Variables
 
-Set the following environment variables according to your setup:
+Define the necessary environment variables for your setup:
 
 ```sh
 USER=my_user     # Example: USER=ebecerra
@@ -21,27 +21,27 @@ ZONE=VM_zone     # Example: ZONE='us-central1-c'
 NAME=VM_name     # Example: NAME='toxin-prediction'
 ```
 
-### 3. Create the Virtual Machine
+### 3️⃣ Create the Virtual Machine
 
-Run the `createVM.sh` script to set up the VM and install dependencies:
+Run the setup script to provision a VM and install dependencies:
 
 ```sh
 ./createVM.sh "$USER" "$ZONE" "$NAME"
 ```
 
-> **Note:** This step takes approximately **40 minutes**, as it provisions the VM and installs all required dependencies. Installing **InterProScan** is particularly time-consuming.
+> ⏳ **Note:** This step takes approximately **40 minutes**, as it installs all required dependencies, including **InterProScan**, which is particularly time-consuming.
 
-### 4. Test the Pipeline Interactively
+### 4️⃣ Connect and Test the Pipeline
 
-#### 4.1 Connect to the VM
+#### 🔹 4.1 Access the VM
 
 ```sh
 gcloud compute ssh "$NAME" --zone="$ZONE"
 ```
 
-#### 4.2 Make the Binaries Discoverable
+#### 🔹 4.2 Set Up the Environment
 
-Ensure the necessary binaries are accessible:
+Ensure necessary binaries are accessible:
 
 ```sh
 eval "`$HOME/miniforge3/bin/mamba shell hook --shell bash`"
@@ -55,40 +55,41 @@ ISCAN_BIN="$(realpath "$ISCAN_DIR/interproscan.sh")"
 sudo ln -s "$ISCAN_BIN" /usr/bin/interproscan.sh
 ```
 
-#### 4.3 Run the Hoox Test
+#### 🔹 4.3 Run the Pandoomain Test
 
 ```sh
 make test
 ```
 
-### 5. Use the Pipeline
+### 5️⃣ Run the Pipeline
 
-To run Hoox, follow these steps:
+1. Edit `config/config.yaml` with your desired configuration.
+2. Provide a `genomes.txt` file with genome entries.
+3. Create a `queries` directory with necessary query files.
 
-1. Edit `config/config.yaml` with the desired configuration.
-2. Create a `genomes.txt` file.
-3. Create a `queries` directory.
-
-Then, execute the pipeline with:
+Run the pipeline with:
 
 ```sh
 snakemake --cores all --configfile config/config.yaml
 ```
 
-## Requirements
+---
 
-### Prerequisites
+## 🔧 Requirements
 
-Ensure you have the **Google Cloud SDK (`gcloud` command)** installed. You can install it from:
+### ✅ Prerequisites
+
+Ensure you have the **Google Cloud SDK (`gcloud` command)** installed. Install it from:
 [Google Cloud SDK Installation Guide](https://cloud.google.com/sdk/docs/install)
 
-### Setup
+### 🔑 Authentication & Setup
 
-Before proceeding, ensure you have:
+Before proceeding, make sure you have:
 - Selected a Google Cloud project.
-- Completed authentication and login.
+- Logged into your Google Cloud account.
 
 ```sh
 gcloud auth login
 gcloud config set project [PROJECT_ID]
 ```
+
