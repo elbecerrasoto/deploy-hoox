@@ -2,7 +2,7 @@
 
 MINIFORGE="$HOME/miniforge3"
 MAMBA="$MINIFORGE/bin/mamba"
-ENV='mamba run --name hoox'
+ENV='mamba run --name pandoomain'
 
 ISCAN_VERSION=5.73-104.0
 MINIFORGE_VERSION=25.1.1-0

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -e
-# Deploy the hoox pipeline
+# Deploy the pandoomain pipeline
 # on a Google Cloud Plataform Virtual Machine.
 # The excution time of this script is:
 # around 40 minutes
@@ -65,6 +65,6 @@ wait_for_ssh
 
 
 cloud_exec "sudo apt update && sudo apt install -y git make"
-cloud_exec "git clone https://github.com/elbecerrasoto/deploy-hoox"
-cloud_exec "git clone https://github.com/elbecerrasoto/hoox"
-cloud_exec "cd $HOME/hoox && $HOME/deploy-hoox/install_hoox.sh"
+cloud_exec "git clone https://github.com/elbecerrasoto/deploy-pandoomain"
+cloud_exec "git clone https://github.com/elbecerrasoto/pandoomain"
+cloud_exec "cd $HOME/pandoomain && $HOME/deploy-pandoomain/install_pandoomain.sh"
