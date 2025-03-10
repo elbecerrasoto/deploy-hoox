@@ -1,4 +1,4 @@
-# Deploy Hoox
+# deploy-hoox
 
 Deploy the **Hoox pipeline** on a **Google Cloud Platform (GCP) Virtual Machine (VM)**.
 
@@ -7,8 +7,8 @@ Deploy the **Hoox pipeline** on a **Google Cloud Platform (GCP) Virtual Machine 
 ### 1. Clone the Repository
 
 ```sh
-git clone https://github.com/elbecerrasoto/deploy-hoox
-cd deploy-hoox
+git clone https://github.com/elbecerrasoto/deploy-pandoomain
+cd deploy-pandoomain
 ```
 
 ### 2. Define Input Variables
@@ -45,9 +45,9 @@ Ensure the necessary binaries are accessible:
 
 ```sh
 eval "`$HOME/miniforge3/bin/mamba shell hook --shell bash`"
-mamba activate hoox
+mamba activate pandoomain
 
-cd hoox
+cd pandoomain
 
 ISCAN_DIR="$(find . -maxdepth 1 -type d -name 'interproscan-*')"
 ISCAN_BIN="$(realpath "$ISCAN_DIR/interproscan.sh")"
